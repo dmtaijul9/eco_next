@@ -1,0 +1,314 @@
+import clsx from "clsx";
+
+const formClasses =
+  "block w-full appearance-none rounded-md border border-gray-200 bg-white py-[calc(theme(spacing.2)-1px)] px-[calc(theme(spacing.3)-1px)] text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm";
+
+function Label({ id, children }) {
+  return (
+    <label
+      htmlFor={id}
+      className="block mb-2 text-sm font-semibold text-gray-900"
+    >
+      {children}
+    </label>
+  );
+}
+
+export function TextField({
+  id,
+  label,
+  error,
+  value,
+  name,
+  type = "text",
+  className = "",
+  register,
+  onChange,
+  ...props
+}) {
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <input
+        id={id}
+        type={type}
+        {...props}
+        className={formClasses}
+        {...(register && register(id))}
+        {...(onChange && { onChange })}
+        {...(name && { name })}
+        {...(value && { value })}
+      />
+      {error && <span className="text-xs text-danger">{error}</span>}
+    </div>
+  );
+}
+
+export const TextAreaField = ({
+  id,
+  label,
+  name,
+  value,
+  onChange,
+  error,
+  className = "",
+  register,
+  ...props
+}) => {
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <textarea
+        id={id}
+        {...props}
+        className={formClasses}
+        {...(register && register(id))}
+        {...(onChange && { onChange })}
+        {...(name && { name })}
+        {...(value && { value })}
+      />
+      {error && <span className="text-xs text-danger">{error}</span>}
+    </div>
+  );
+};
+
+export const NumberField = ({
+  id,
+  label,
+  error,
+  name,
+  onChange,
+  value,
+  className = "",
+  register,
+  ...props
+}) => {
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <input
+        id={id}
+        type="number"
+        {...props}
+        className={formClasses}
+        {...(register && register(id))}
+        {...(onChange && { onChange })}
+        {...(name && { name })}
+        {...(value && { value })}
+      />
+      {error && <span className="text-xs text-danger">{error}</span>}
+    </div>
+  );
+};
+
+export const CheckboxField = ({
+  id,
+  label,
+  className = "",
+  name,
+  value,
+  checked,
+  onOptionChange,
+  ...props
+}) => {
+  return (
+    <div className={`${className} relative`}>
+      <div className="flex items-center">
+        <input
+          id={id}
+          type="checkbox"
+          name={name}
+          checked={checked}
+          defaultChecked={checked}
+          {...props}
+          className="w-5 h-5 text-green-600 border-gray-300 focus:ring-green"
+          onChange={onOptionChange}
+        />
+        <label
+          htmlFor={id}
+          className="block ml-3 text-sm font-semibold text-graydark dark:text-gray-default md:text-base"
+        >
+          {label}
+        </label>
+      </div>
+    </div>
+  );
+};
+
+export const RadioGroupField = ({
+  id,
+  label,
+  options,
+  selectedOption,
+  onOptionChange,
+  name,
+  className = "",
+  ...props
+}) => {
+  const handleOnChange = (event) => {
+    const { value } = event.target;
+    onOptionChange({ name, value });
+  };
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <div className="flex flex-wrap items-center gap-4 mt-1">
+        {options.map((option) => (
+          <div key={option} className="flex items-center cursor-pointer">
+            <input
+              id={`${name}_${option}`}
+              name={name}
+              type="radio"
+              value={option}
+              checked={selectedOption === option}
+              onChange={handleOnChange}
+              className="w-5 h-5 text-green-600 border-gray-300 cursor-pointer focus:ring-green-500"
+              {...props}
+            />
+            <label
+              htmlFor={`${name}_${option}`}
+              className="block ml-1 text-sm font-medium cursor-pointer md:text-base dark:text-gray-default text-graydark"
+            >
+              {option}
+            </label>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const CheckboxGroupField = ({
+  id,
+  label,
+  options,
+  checkedOptions,
+  onCheckboxChange,
+  className = "",
+  name,
+  ...props
+}) => {
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+
+    if (checked) {
+      onCheckboxChange({ name, value: [...checkedOptions, value] });
+    } else {
+      onCheckboxChange({
+        name,
+        value: checkedOptions.filter((option) => option !== value),
+      });
+    }
+  };
+
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <div className="flex flex-wrap items-center gap-5">
+        {options.map((option) => (
+          <div key={option} className="flex items-center cursor-pointer">
+            <input
+              id={`${name}_${option}`}
+              name={name}
+              type="checkbox"
+              value={option}
+              checked={checkedOptions.includes(option)}
+              onChange={handleCheckboxChange}
+              className="w-5 h-5 text-green-600 border-gray-300 cursor-pointer focus:ring-green-500"
+              {...props}
+            />
+            <label
+              htmlFor={`${name}_${option}`}
+              className="block ml-1 text-sm font-medium cursor-pointer md:text-base dark:text-gray-default text-graydark"
+            >
+              {option}
+            </label>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const SelectField = ({
+  id,
+  label,
+  className = "",
+  name,
+  value,
+  onChange,
+  register,
+  options,
+  ...props
+}) => {
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <select
+        id={id}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm bg-gray-default dark:bg-boxdark border-green focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
+        {...(register && register(id))}
+        {...props}
+      >
+        {options.map((option) => (
+          <option key={option} selected={value === option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export const FileField = ({
+  id,
+  label,
+  className = "",
+  name,
+  value,
+  onChange,
+  ...props
+}) => {
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <input
+        id={id}
+        name={name}
+        type="file"
+        value={value}
+        onChange={onChange}
+        className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md shadow-sm border-green focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
+        {...props}
+      />
+    </div>
+  );
+};
+
+export const SearchField = ({
+  id,
+  label,
+  className = "",
+  name,
+  value,
+  onChange,
+  ...props
+}) => {
+  return (
+    <div className={`${className} relative`}>
+      {label && <Label id={id}>{label}:</Label>}
+      <input
+        id={id}
+        name={name}
+        type="search"
+        value={value}
+        onChange={onChange}
+        className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md shadow-sm border-green focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
+        {...props}
+      />
+    </div>
+  );
+};
