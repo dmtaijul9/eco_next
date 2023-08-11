@@ -135,21 +135,28 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  ShoppingBagIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "@/icons/Logo";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import CartNav from "./CartNav";
 
 export function Header() {
+  const { data: session, status } = useSession({
+    required: true,
+  });
+
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-white">
+    <div className="bg-white " style={{ zIndex: 9000 }}>
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+        <Dialog
+          as="div"
+          className="relative lg:hidden"
+          onClose={setOpen}
+          style={{ zIndex: 9000 }}
+        >
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -162,7 +169,7 @@ export function Header() {
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 z-40 flex">
+          <div className="fixed inset-0 flex" style={{ zIndex: 9000 }}>
             <Transition.Child
               as={Fragment}
               enter="transition ease-in-out duration-300 transform"
@@ -384,7 +391,10 @@ export function Header() {
                                 aria-hidden="true"
                               />
 
-                              <div className="relative bg-white">
+                              <div
+                                className="relative bg-white"
+                                style={{ zIndex: 9000 }}
+                              >
                                 <div className="px-8 mx-auto max-w-7xl">
                                   <div className="grid grid-cols-2 py-16 gap-x-8 gap-y-10">
                                     <div className="grid grid-cols-2 col-start-2 gap-x-8">
@@ -473,46 +483,34 @@ export function Header() {
               </Popover.Group>
 
               <div className="flex items-center ml-auto">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Sign in
-                  </a>
-                  <span className="w-px h-6 bg-gray-200" aria-hidden="true" />
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Create account
-                  </a>
-                </div>
+                {
+                  // if user is logged in then remove login and signup link
 
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon
-                      className="w-6 h-6"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
+                  status !== "authenticated" ? (
+                    <>
+                      <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                        <Link
+                          href="/login"
+                          className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                        >
+                          Sign in
+                        </Link>
+                        <span
+                          className="w-px h-6 bg-gray-200"
+                          aria-hidden="true"
+                        />
+                        <Link
+                          href="/register"
+                          className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                        >
+                          Create account
+                        </Link>
+                      </div>
+                    </>
+                  ) : null
+                }
 
-                {/* Cart */}
-                <div className="flow-root ml-4 lg:ml-6">
-                  <a href="#" className="flex items-center p-2 -m-2 group">
-                    <ShoppingBagIcon
-                      className="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
-                </div>
+                <CartNav />
               </div>
             </div>
           </div>

@@ -5,13 +5,11 @@ import bcrypt from "bcryptjs";
 
 import User from "@/models/user";
 import db from "@/config/db";
+import { removeLeadingDigits } from "@/tools/removeLeadingDigits";
 
 export default NextAuth({
-  session: {
-    jwt: true,
-  },
-  url: process.env.NEXTAUTH_URL,
-  secret: process.env.NEXTAUTH_SECRET,
+  url: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   providers: [
     Credentials({
       authorize: async (credentials) => {
@@ -23,10 +21,16 @@ export default NextAuth({
           throw new Error("Please enter all fields");
         }
 
-        const user = await User.findOne({ phone }).select("+password");
+        const bdPhone = removeLeadingDigits(phone);
+
+        if (bdPhone.length !== 13) {
+          throw new Error("Invalid phone number.");
+        }
+
+        const user = await User.findOne({ phone: bdPhone }).select("+password");
 
         if (!user) {
-          throw new Error("Invalid credentials");
+          throw new Error("User not found");
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -35,18 +39,24 @@ export default NextAuth({
           throw new Error("Invalid credentials");
         }
 
-        return Promise.resolve(user);
+        return user;
       },
     }),
   ],
+  session: {
+    jwt: true,
+  },
   callbacks: {
-    jwt: async (token, user) => {
-      user && (token.user = user);
-      return Promise.resolve(token);
+    jwt: async ({ token, user }) => {
+      if (user) {
+        const { _id, first_name, last_name, email, phone } = user;
+        token.user = { _id, first_name, last_name, email, phone };
+      }
+      return token;
     },
-    session: async (session, user) => {
-      session.user = user.user;
-      return Promise.resolve(session);
+    session: async ({ session, token }) => {
+      session.user = token.user;
+      return session;
     },
   },
 });

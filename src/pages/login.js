@@ -8,16 +8,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/utils/validatorSchema";
-import { useMutation } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const {
     setValue,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -29,7 +32,26 @@ export default function Login() {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setIsLoading(true);
+
+    const user = await signIn("credentials", {
+      redirect: false,
+      phone: data.phone,
+      password: data.password,
+    });
+
+    if (user?.error) {
+      console.log(user.error);
+      toast.error(user.error);
+    }
+
+    if (user?.ok) {
+      toast.success("Login Success");
+      reset();
+      router.push("/");
+    }
+
+    setIsLoading(false);
   };
 
   return (

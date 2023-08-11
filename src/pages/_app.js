@@ -2,6 +2,10 @@ import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
+import { store } from "@/redux/store";
+import { Provider } from "react-redux";
+
+import "../styles/slick.css";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -13,8 +17,10 @@ export default function App({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={session}>
-        <Component {...pageProps} />
-        <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+        <Provider store={store}>
+          <Component {...pageProps} />
+          <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+        </Provider>
       </SessionProvider>
     </QueryClientProvider>
   );
