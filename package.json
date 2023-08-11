@@ -44,5 +44,8 @@
     "use-debounce": "^9.0.4",
     "validator": "^13.11.0",
     "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.32.6"
   }
 }

@@ -13,4 +13,18 @@ const getAllEcoSpecialProducts = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-export { getAllEcoSpecialProducts };
+const getSingleProductDetails = catchAsyncErrors(async (req, res, next) => {
+  const { productId } = req.query;
+
+  const singleProduct = await Product.findById(productId);
+
+  res.status(200).json({
+    success: true,
+    message: "This route is working.",
+    data: {
+      product: singleProduct,
+    },
+  });
+});
+
+export { getAllEcoSpecialProducts, getSingleProductDetails };

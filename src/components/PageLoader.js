@@ -2,7 +2,10 @@ import React from "react";
 
 const PageLoader = () => {
   return (
-    <div class="flex items-center justify-center w-screen h-screen bg-primary">
+    <div
+      class="flex items-center justify-center w-screen h-screen fixed top-0 left-0 bg-primary"
+      style={{ zIndex: 999999 }}
+    >
       <div class="flex justify-center items-center space-x-1 text-sm text-white">
         <svg
           fill="none"
