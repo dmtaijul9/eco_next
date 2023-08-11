@@ -6,30 +6,41 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { addToCart } from "@/redux/reducers/cartSlice";
 import Link from "next/link";
+import Image from "next/image";
+import { formateMoney } from "@/tools/importantTools";
+import { Button } from "./Button";
 
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
+  //INFO: Get the cart from the local storage.
   const [localCartItems, setCartItems] = useLocalStorage("CART", {
     items: [],
     totalItem: 0,
   });
+  //INFO: Get the cart from the redux store.
   const cartItems = useSelector((state) => state.cart);
 
+  //INFO: This is the function that will be called when the user clicks the "Remove" button.
   const removeCartItem = () => {
+    //INFO: Remove the item from the cart.
     const newCartItems = {
-      items: cartItems.items.filter((cartItem) => cartItem.id !== item.id),
+      items: cartItems.items.filter((cartItem) => cartItem._id !== item._id),
       totalItem: cartItems.totalItem - item.quantity,
     };
+    //INFO: Update the cart in the local storage.
     setCartItems(newCartItems);
+    //INFO: Update the cart in the redux store.
     dispatch(addToCart(newCartItems));
   };
 
   return (
-    <li key={item.id} className="flex py-6">
+    <li key={item._id} className="flex py-6">
       <div className="flex-shrink-0 w-24 h-24 overflow-hidden border border-gray-200 rounded-md">
-        <img
-          src={item.imageSrc}
-          alt={item.imageAlt}
+        <Image
+          src={item.image}
+          alt={item.name}
+          width={150}
+          height={150}
           className="object-cover object-center w-full h-full"
         />
       </div>
@@ -38,22 +49,20 @@ const CartItem = ({ item }) => {
         <div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <h3>
-              <a href={item.href}>{item.name}</a>
+              <Link href={`/product/${item._id}`}>{item.name}</Link>
             </h3>
-            <p className="ml-4">$ {item.price * item.quantity}</p>
+            <p className="ml-4">{formateMoney(item.price * item.quantity)}</p>
           </div>
         </div>
         <div className="flex items-end justify-between flex-1 text-sm">
-          <p className="text-gray-500">Qty {item.quantity}</p>
+          <p className="text-gray-500">
+            <span className="font-semibold">Qty:</span> {item.quantity}
+          </p>
 
           <div className="flex">
-            <button
-              type="button"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-              onClick={removeCartItem}
-            >
+            <Button type="button" color="danger" onClick={removeCartItem}>
               Remove
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -62,9 +71,12 @@ const CartItem = ({ item }) => {
 };
 
 const CartNav = () => {
+  //INFO: Get the cart from the redux store.
   const cartItems = useSelector((state) => state.cart);
+  //INFO: This is the state that will be used to show/hide the cart.
   const [open, setOpen] = useState(false);
 
+  //INFO: This is the total price of the cart.
   const totalPrice = cartItems?.items
     ?.map((item) => item.price * item.quantity)
     .reduce((total, item) => (total += item), 0);
@@ -145,7 +157,7 @@ const CartNav = () => {
                             >
                               {cartItems?.totalItem > 0 ? (
                                 cartItems?.items?.map((product) => (
-                                  <CartItem item={product} key={product.id} />
+                                  <CartItem item={product} key={product._id} />
                                 ))
                               ) : (
                                 <p className="text-center">No items in cart</p>
@@ -157,7 +169,7 @@ const CartNav = () => {
 
                       <div className="px-4 py-6 border-t border-gray-200 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
-                          <p>Subtotal</p>
+                          <p>Total</p>
                           <p>${totalPrice}</p>
                         </div>
 
