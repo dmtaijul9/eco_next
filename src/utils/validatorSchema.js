@@ -38,3 +38,10 @@ export const shippingAddressSchema = object({
   country: string().required("Country is required"),
   reciever_name: string().required("Reciever name is required"),
 });
+
+export const createProductSchema = object({
+  name: string().required("Product name is required"),
+  description: string().required("Product description is required"),
+  brand: string().required("Product brand is required"),
+  price: number().required("Product price is required"),
+});

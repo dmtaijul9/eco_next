@@ -157,7 +157,7 @@ export const SelectField = ({
         name={name}
         value={value}
         onChange={onChange}
-        className="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm bg-gray-default dark:bg-boxdark border-green focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
+        className="block w-full px-3 py-2 mt-1 border border-gray-200 rounded-md shadow-sm bg-gray-default dark:bg-boxdark focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
         {...(register && register(id))}
         {...props}
       >

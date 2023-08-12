@@ -20,7 +20,11 @@ const AllProducts = () => {
 
   return (
     <Container className="px-3 py-3 my-10 shadow-md">
-      <ProductTable products={products} title="Letest 30 Orders" />
+      <ProductTable
+        products={products}
+        title="Letest 30 Orders"
+        createLink="/admin/products/create"
+      />
     </Container>
   );
 };

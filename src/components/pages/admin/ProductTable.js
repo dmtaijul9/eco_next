@@ -8,7 +8,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const ProductTable = ({ products = [], title = "", link }) => {
+const ProductTable = ({ products = [], title = "", link, createLink }) => {
   return (
     <div className="px-4 py-5 sm:px-6 lg:px-8">
       <div className="items-center pb-4 border-b sm:flex">
@@ -21,6 +21,11 @@ const ProductTable = ({ products = [], title = "", link }) => {
           {link && (
             <Button href={link} color="cyan">
               All products
+            </Button>
+          )}
+          {createLink && (
+            <Button href={createLink} color="cyan">
+              Create product
             </Button>
           )}
         </div>
