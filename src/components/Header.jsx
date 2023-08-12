@@ -349,10 +349,10 @@ export function Header() {
 
               {/* Logo */}
               <div className="flex ml-4 lg:ml-0">
-                <a href="#">
+                <Link href="/">
                   <span className="sr-only">Your Company</span>
                   <Logo className="w-6 h-6 text-primary" />
-                </a>
+                </Link>
               </div>
 
               {/* Flyout menus */}

@@ -39,7 +39,11 @@ export function TextField({
         {...(name && { name })}
         {...(value && { value })}
       />
-      {error && <span className="text-xs text-danger">{error}</span>}
+      {error && (
+        <span className="text-xs italic text-danger drop-shadow-sm">
+          {error}
+        </span>
+      )}
     </div>
   );
 }

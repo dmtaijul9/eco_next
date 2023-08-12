@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const productSchema = mongoose.Schema(
   {
@@ -34,6 +34,11 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+    },
+    isEcoSpecial: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   {

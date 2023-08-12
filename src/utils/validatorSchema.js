@@ -30,3 +30,11 @@ export const loginSchema = object({
   phone: string().required("Phone number is required"),
   password: string().required("Password is required"),
 });
+
+export const shippingAddressSchema = object({
+  address: string().required("Address is required"),
+  city: string().required("City is required"),
+  postal_code: string().required("Postal code is required"),
+  country: string().required("Country is required"),
+  reciever_name: string().required("Reciever name is required"),
+});
