@@ -60,6 +60,8 @@ const ProductList = () => {
     }
   };
 
+  //INFO: Get all the products from the database.
+
   const { isLoading, data, isError } = useQuery({
     queryKey: ["products"],
     queryFn: getAllEcoSpecialProducts,
@@ -85,7 +87,7 @@ const ProductList = () => {
                       alt={product.name}
                       width={300}
                       height={250}
-                      className="object-cover object-center w-full h-full lg:h-full lg:w-full"
+                      className="object-cover object-center w-full h-full max-h-72 lg:h-full lg:w-full"
                     />
                   </div>
                 </Link>

@@ -79,24 +79,26 @@ export function Header() {
                   ))}
                 </div>
 
-                <div className="px-4 py-6 space-y-6 border-t border-gray-200">
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="block p-2 -m-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
+                {status !== "authenticated" && (
+                  <div className="px-4 py-6 space-y-6 border-t border-gray-200">
+                    <div className="flow-root">
+                      <Link
+                        href="/login"
+                        className="block p-2 -m-2 font-medium text-gray-900"
+                      >
+                        Sign in
+                      </Link>
+                    </div>
+                    <div className="flow-root">
+                      <Link
+                        href="/register"
+                        className="block p-2 -m-2 font-medium text-gray-900"
+                      >
+                        Create account
+                      </Link>
+                    </div>
                   </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="block p-2 -m-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </a>
-                  </div>
-                </div>
+                )}
               </Dialog.Panel>
             </Transition.Child>
           </div>

@@ -8,14 +8,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/utils/validatorSchema";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
 
 export default function Login() {
+  //INFO: Phone Number state
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  //INFO: Login mutation loadeing state
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const { data: session, status } = useSession();
 
   const {
     setValue,
@@ -32,27 +37,36 @@ export default function Login() {
   });
 
   const onSubmit = async (data) => {
+    //INFO: starting loading
     setIsLoading(true);
 
+    //INFO: login mutaion in next auth passing credentials and redirect false
     const user = await signIn("credentials", {
       redirect: false,
       phone: data.phone,
       password: data.password,
     });
 
+    //INFO: if error then show error
     if (user?.error) {
-      console.log(user.error);
       toast.error(user.error);
     }
 
+    //INFO: if success then show success and redirect to home
     if (user?.ok) {
       toast.success("Login Success");
       reset();
       router.push("/");
     }
 
+    //INFO: stop loading
     setIsLoading(false);
   };
+
+  //INFO: if user is authenticated then redirect to home
+  if (status === "authenticated") {
+    router.push("/");
+  }
 
   return (
     <AuthLayout

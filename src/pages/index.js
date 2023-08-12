@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Layout>
       <>
-        {/* <Testimoni /> */}
+        <Testimoni />
         <ProductList />
       </>
     </Layout>

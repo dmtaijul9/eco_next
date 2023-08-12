@@ -8,16 +8,20 @@ import React from "react";
 
 const Confirmed = () => {
   const router = useRouter();
+  //INFO: Order id from url
   const { orderId } = router.query;
 
+  //INFO: Get single order query
   const { isLoading, isError, data } = useQuery({
     queryKey: ["singleOrder", orderId],
     queryFn: () => getSingleOrderQuery({ id: orderId }),
     enabled: !!orderId,
   });
 
+  //INFO: Order data
   const order = data?.data?.order;
 
+  //INFO: if loading show page loader
   if (isLoading) {
     return <PageLoader />;
   }

@@ -6,11 +6,13 @@ import PageLoader from "@/components/PageLoader";
 import UsersTable from "./UserTable";
 
 const AllCustomers = () => {
+  //INFO: Get letest users
   const { isLoading, data, isError, refetch } = useQuery({
     queryKey: ["allUsers"],
     queryFn: getLetestUsersQuery,
   });
 
+  //INFO: Letest customers
   const customers = data?.data?.users;
 
   if (isLoading) {

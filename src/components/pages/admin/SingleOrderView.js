@@ -16,8 +16,10 @@ const status = ["pending", "processing", "completed", "cancelled"];
 
 const SingleOrderView = () => {
   const router = useRouter();
+  //INFO: Get order id from url
   const { orderId } = router.query;
 
+  //INFO: Get session and if not logged in redirect to login page
   const { data: session, status: session_status } = useSession({
     required: true,
     onUnauthenticated: () => {
@@ -25,22 +27,26 @@ const SingleOrderView = () => {
     },
   });
 
+  //INFO: Update order state for order status and is delivered
   const [updateState, setUpdateState] = useState({
     order_status: "pending",
     is_delivered: false,
   });
 
+  //INFO: Get single order query
   const { isLoading, isError, data, refetch, isFetched } = useQuery({
     queryKey: ["singleOrder", orderId],
     queryFn: () => getSingleOrderQuery({ id: orderId }),
     enabled: !!orderId,
   });
 
+  //INFO: Update order mutation
   const { mutate, isLoading: updateLoading } = useMutation({
     mutationKey: ["updateOrder", orderId],
     mutationFn: updateOrderMutationByAdmin,
   });
 
+  //INFO: Set order status and is delivered state preset
   useEffect(() => {
     if (data?.data?.order) {
       setUpdateState({
@@ -50,10 +56,12 @@ const SingleOrderView = () => {
     }
   }, [isFetched]);
 
+  //INFO: order data
   const order = data?.data?.order;
 
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
+    //INFO: Update order mutation variables
     const variables = {
       ...updateState,
     };
@@ -65,6 +73,7 @@ const SingleOrderView = () => {
       },
       {
         onSuccess: () => {
+          //INFO: Reset form
           toast.success("Order updated successfully");
           refetch();
         },

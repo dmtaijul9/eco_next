@@ -32,15 +32,20 @@ const plans = [
 
 const OrderForm = ({ total }) => {
   const router = useRouter();
+  //INFO: Payment method state
   const [paymentMethod, setPaymentMethod] = useState(plans[0].value);
 
+  //INFO: Local storage cart items
   const [localCartItems, setCartItems] = useLocalStorage("CART", {
     items: [],
     totalItem: 0,
   });
+
+  //INFO: Redux cart items
   const cartItems = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
+  //INFO: state of shipping address
   const {
     register,
     handleSubmit,
@@ -57,12 +62,14 @@ const OrderForm = ({ total }) => {
     resolver: yupResolver(shippingAddressSchema),
   });
 
+  //INFO: Create order mutation
   const { mutate, isLoading } = useMutation({
     mutationKey: ["createOrder"],
     mutationFn: createOrderMutation,
   });
 
   const onSubmit = async (data) => {
+    //INFO: filtering cart items for making order as database schema
     const order_items = cartItems?.items?.map((item) => {
       return {
         name: item.name,
@@ -73,8 +80,10 @@ const OrderForm = ({ total }) => {
       };
     });
 
+    //INFO: Create order variables
     const { address, city, postal_code, country, reciever_name } = data;
 
+    //INFO: Create order variables
     const variables = {
       order_items,
       shipping_address: {
@@ -88,6 +97,7 @@ const OrderForm = ({ total }) => {
       total_price: total.toFixed(2),
     };
 
+    //INFO: Create order mutation finally run here
     mutate(
       { variables },
       {

@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
 import { store } from "@/redux/store";
 import { Provider } from "react-redux";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "../styles/slick.css";
 
@@ -21,7 +20,6 @@ export default function App({
         <Provider store={store}>
           <Component {...pageProps} />
           <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </Provider>
       </SessionProvider>
     </QueryClientProvider>

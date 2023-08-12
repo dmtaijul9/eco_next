@@ -17,12 +17,16 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
 const CreateProduct = () => {
+  //INFO: Product form state for image category and eco special
   const [productForm, setProductForm] = useState({
     image: null,
     category: "smartphone",
     isEcoSpecial: false,
   });
+  //INFO: Image preview state
   const [imagePreview, setImagePreview] = useState(null);
+
+  //INFO: state of product form name brand price and description
   const {
     register,
     handleSubmit,
