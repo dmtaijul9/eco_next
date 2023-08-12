@@ -17,7 +17,7 @@ const DashboardPage = () => {
     },
   });
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["dashboard"],
     queryFn: getDashboardAnalyticsQuery,
   });
@@ -209,6 +209,7 @@ const DashboardPage = () => {
             customers={dashboardData?.newUsers}
             title="New Customers"
             link="/admin/customers"
+            refetch={refetch}
           />
         </section>
       </main>

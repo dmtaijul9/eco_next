@@ -53,7 +53,7 @@ const getAllEcoSpecialProducts = catchAsyncErrors(async (req, res, next) => {
 });
 
 const getAllProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await Product.find();
+  const products = await Product.find().sort("-createdAt");
 
   res.status(200).json({
     success: true,

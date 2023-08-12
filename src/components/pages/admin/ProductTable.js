@@ -91,7 +91,7 @@ const ProductTable = ({ products = [], title = "", link, createLink }) => {
                         alt={product?.name}
                         width={100}
                         height={100}
-                        className="object-cover rounded-md shadow-sm "
+                        className="object-cover w-20 h-20 rounded-md shadow-sm"
                       />
                     </td>
                     <td
@@ -150,7 +150,7 @@ const ProductTable = ({ products = [], title = "", link, createLink }) => {
                         "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-8 lg:pr-8"
                       )}
                     >
-                      <Link href={`/admin/products/${product?._id}`}>
+                      <Link href={`/product/${product?._id}`}>
                         View
                         <span className="sr-only">
                           , {product?.payment_method}

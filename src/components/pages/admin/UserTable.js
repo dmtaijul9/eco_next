@@ -1,11 +1,43 @@
 import { Button } from "@/components/Button";
+import { updateUserMutation } from "@/utils/resolvers/mutation";
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
+import { toast } from "react-hot-toast";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const UsersTable = ({ customers = [], title = "", link }) => {
+const UsersTable = ({ customers = [], title = "", link, refetch }) => {
+  const { mutate, isLoading } = useMutation({
+    mutationKey: "updateUser",
+    mutationFn: updateUserMutation,
+  });
+
+  const [updatingId, setUpdatingId] = React.useState(null);
+
+  const handleUpdate = ({ id, role }) => {
+    setUpdatingId(id);
+    mutate(
+      {
+        variables: {
+          role,
+        },
+        userId: id,
+      },
+      {
+        onSuccess: () => {
+          toast.success("User updated successfully");
+          setUpdatingId(null);
+          refetch();
+        },
+        onError: () => {
+          toast.error("Something went wrong");
+        },
+      }
+    );
+  };
+
   return (
     <div className="px-4 py-5 sm:px-6 lg:px-8">
       <div className="items-center pb-4 border-b sm:flex">
@@ -127,7 +159,20 @@ const UsersTable = ({ customers = [], title = "", link }) => {
                         "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                       )}
                     >
-                      <Button>Make Admin</Button>
+                      <Button
+                        color={customer?.role === "ADMIN" ? "cyan" : "gray"}
+                        onClick={() => {
+                          handleUpdate({
+                            id: customer._id,
+                            role: customer?.role === "ADMIN" ? "USER" : "ADMIN",
+                          });
+                        }}
+                        disabled={isLoading && updatingId === customer._id}
+                      >
+                        {customer?.role === "ADMIN"
+                          ? "Make User"
+                          : "Make Admin"}
+                      </Button>
                     </td>
                     <td
                       className={classNames(

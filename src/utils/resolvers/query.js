@@ -21,3 +21,6 @@ export const getLetestOrdersQuery = () =>
 
 export const getLetestUsersQuery = () =>
   axios.get("/api/admin/users").then((res) => res.data);
+
+export const getMyOrdersQuery = () =>
+  axios.get("/api/order").then((res) => res.data);

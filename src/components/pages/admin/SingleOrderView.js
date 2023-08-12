@@ -5,6 +5,7 @@ import { formateMoney } from "@/tools/importantTools";
 import { updateOrderMutationByAdmin } from "@/utils/resolvers/mutation";
 import { getSingleOrderQuery } from "@/utils/resolvers/query";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -16,6 +17,13 @@ const status = ["pending", "processing", "completed", "cancelled"];
 const SingleOrderView = () => {
   const router = useRouter();
   const { orderId } = router.query;
+
+  const { data: session, status: session_status } = useSession({
+    required: true,
+    onUnauthenticated: () => {
+      router.push("/login");
+    },
+  });
 
   const [updateState, setUpdateState] = useState({
     order_status: "pending",
@@ -79,52 +87,54 @@ const SingleOrderView = () => {
               <div className="w-full">
                 <dl className="grid grid-cols-1 mt-16 text-sm y-600 gap-x-4">
                   <div className="mt-2 ">
-                    <div className="p-3 mb-5 border rounded-md">
-                      <dt className="pb-3 font-medium text-gray-900 border-b">
-                        Update Order
-                      </dt>
-                      <form onSubmit={handleUpdateOrder}>
-                        <div className="w-full mt-5">
-                          <SelectField
-                            options={status}
-                            className="w-full"
-                            label="Order Status"
-                            id="order_status"
-                            name="order_status"
-                            value={updateState.order_status}
-                            onChange={(e) => {
-                              console.log(e.target.value);
-                              setUpdateState({
-                                ...updateState,
-                                order_status: e.target.value,
-                              });
-                            }}
-                          />
-                          <CheckboxField
-                            label="Mark as delivered"
-                            id="is_delivered"
-                            name="is_delivered"
-                            onOptionChange={(e) => {
-                              setUpdateState({
-                                ...updateState,
-                                is_delivered: e.target.checked,
-                              });
-                            }}
-                            checked={updateState.is_delivered}
-                            className="mt-5"
-                          />
-                        </div>
-                        <div className="mt-5">
-                          <Button
-                            color="cyan"
-                            className="w-full"
-                            disabled={updateLoading}
-                          >
-                            Update Order
-                          </Button>
-                        </div>
-                      </form>
-                    </div>
+                    {session?.user?.role === "ADMIN" && (
+                      <div className="p-3 mb-5 border rounded-md">
+                        <dt className="pb-3 font-medium text-gray-900 border-b">
+                          Update Order
+                        </dt>
+                        <form onSubmit={handleUpdateOrder}>
+                          <div className="w-full mt-5">
+                            <SelectField
+                              options={status}
+                              className="w-full"
+                              label="Order Status"
+                              id="order_status"
+                              name="order_status"
+                              value={updateState.order_status}
+                              onChange={(e) => {
+                                console.log(e.target.value);
+                                setUpdateState({
+                                  ...updateState,
+                                  order_status: e.target.value,
+                                });
+                              }}
+                            />
+                            <CheckboxField
+                              label="Mark as delivered"
+                              id="is_delivered"
+                              name="is_delivered"
+                              onOptionChange={(e) => {
+                                setUpdateState({
+                                  ...updateState,
+                                  is_delivered: e.target.checked,
+                                });
+                              }}
+                              checked={updateState.is_delivered}
+                              className="mt-5"
+                            />
+                          </div>
+                          <div className="mt-5">
+                            <Button
+                              color="cyan"
+                              className="w-full"
+                              disabled={updateLoading}
+                            >
+                              Update Order
+                            </Button>
+                          </div>
+                        </form>
+                      </div>
+                    )}
                     <dt className="font-medium text-gray-900">
                       Shipping Address
                     </dt>
@@ -214,13 +224,23 @@ const SingleOrderView = () => {
               </dl>
 
               <div className="py-6 mt-16 text-right border-t border-gray-200">
-                <Link
-                  href="/admin/dashboard"
-                  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Return to Dashboard
-                  <span aria-hidden="true"> &rarr;</span>
-                </Link>
+                {session?.user?.role === "ADMIN" ? (
+                  <Link
+                    href="/admin/dashboard"
+                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Return to Dashboard
+                    <span aria-hidden="true"> &rarr;</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/shop"
+                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                  >
+                    Return to shop
+                    <span aria-hidden="true"> &rarr;</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

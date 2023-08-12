@@ -6,7 +6,7 @@ import PageLoader from "@/components/PageLoader";
 import UsersTable from "./UserTable";
 
 const AllCustomers = () => {
-  const { isLoading, data, isError } = useQuery({
+  const { isLoading, data, isError, refetch } = useQuery({
     queryKey: ["allUsers"],
     queryFn: getLetestUsersQuery,
   });
@@ -19,7 +19,11 @@ const AllCustomers = () => {
 
   return (
     <Container className="px-3 py-3 my-10 shadow-md">
-      <UsersTable customers={customers} title="Letest 30 Customers" />
+      <UsersTable
+        customers={customers}
+        title="Letest 30 Customers"
+        refetch={refetch}
+      />
     </Container>
   );
 };

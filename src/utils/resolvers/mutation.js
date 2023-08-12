@@ -19,3 +19,6 @@ export const updateOrderMutationByAdmin = ({ variables, orderId }) =>
 
 export const createProductMutation = ({ variables }) =>
   axios.post("/api/products", variables, config).then((res) => res.data);
+
+export const updateUserMutation = ({ variables, userId }) =>
+  axios.put("/api/user/" + userId, variables, config).then((res) => res.data);

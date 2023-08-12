@@ -103,8 +103,8 @@ const CreateProduct = () => {
         </div>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex items-end w-full gap-3">
-              <div className="flex-1">
+            <div className="flex flex-col items-end w-full gap-3 md:flex-row">
+              <div className="order-2 w-full md:flex-1 md:order-1">
                 <TextField
                   className="w-full"
                   label="Product Name"
@@ -137,7 +137,7 @@ const CreateProduct = () => {
                   name="catergory"
                 />
               </div>
-              <div className="flex items-center justify-end flex-1">
+              <div className="flex items-center justify-center order-1 w-full mt-5 md:justify-end md:flex-1 md:order-2 md:mt-0">
                 <label
                   htmlFor="image"
                   className="border rounded-md cursor-pointer"
@@ -193,7 +193,7 @@ const CreateProduct = () => {
                 label="Eco special "
                 id="isEcoSpecial"
                 value={productForm.isEcoSpecial}
-                onChange={(e) => {
+                onOptionChange={(e) => {
                   setProductForm({
                     ...productForm,
                     isEcoSpecial: e.target.checked,
@@ -207,6 +207,7 @@ const CreateProduct = () => {
                 color="cyan"
                 type="submit"
                 className="w-full px-16 md:w-auto"
+                disabled={creating}
               >
                 Create Product
               </Button>

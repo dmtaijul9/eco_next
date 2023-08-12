@@ -181,16 +181,11 @@ export function Header() {
                         <div className="grid w-full grid-cols-1 px-2 py-2">
                           <Link
                             className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
-                            href="/analytics"
+                            href="/dashboard/my-orders"
                           >
-                            My Account
+                            My Orders
                           </Link>
-                          <Link
-                            className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
-                            href="/engagement"
-                          >
-                            Order tracking
-                          </Link>
+
                           {
                             // if user is admin then show admin link
                             session?.user?.role === "ADMIN" && (
