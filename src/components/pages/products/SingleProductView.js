@@ -99,7 +99,7 @@ const SingleProductView = () => {
                 <Tab className="relative flex items-center justify-center h-24 text-sm font-medium text-gray-900 uppercase bg-white rounded-md cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4">
                   {({ selected }) => (
                     <>
-                      <span className="sr-only">{product.name}</span>
+                      <span className="sr-only">{product?.name}</span>
                       <span className="absolute inset-0 overflow-hidden rounded-md">
                         <Image
                           src={product?.image}
@@ -123,10 +123,10 @@ const SingleProductView = () => {
             </div>
 
             <Tab.Panels className="w-full aspect-h-1 aspect-w-1">
-              <Tab.Panel key={product._id}>
+              <Tab.Panel key={product?._id}>
                 <Image
-                  src={product.image}
-                  alt={product.name}
+                  src={product?.image}
+                  alt={product?.name}
                   width={300}
                   height={300}
                   className="object-cover object-center w-full h-full sm:rounded-lg"
@@ -138,12 +138,12 @@ const SingleProductView = () => {
           {/* Product info */}
           <div className="px-4 mt-10 sm:mt-16 sm:px-0 lg:mt-0">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {product.name}
+              {product?.name}
             </h1>
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
               <p className="text-3xl tracking-tight text-gray-900">
-                {formateMoney(product.price)}
+                {formateMoney(product?.price)}
               </p>
             </div>
 
@@ -152,7 +152,7 @@ const SingleProductView = () => {
 
               <div
                 className="space-y-6 text-base text-gray-700"
-                dangerouslySetInnerHTML={{ __html: product.description }}
+                dangerouslySetInnerHTML={{ __html: product?.description }}
               />
             </div>
             <div className="mt-6">

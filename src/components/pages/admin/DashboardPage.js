@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import React from "react";
 import NewOrderTable from "./NewOrderTable";
+import UsersTable from "./UserTable";
+import ProductTable from "./ProductTable";
 
 const DashboardPage = () => {
   const { data: session, status } = useSession({
@@ -189,7 +191,25 @@ const DashboardPage = () => {
           </div>
         </section>
         <section className="mt-5 shadow-md">
-          <NewOrderTable newOrders={dashboardData?.newOrders} />
+          <NewOrderTable
+            orders={dashboardData?.newOrders}
+            title="Next Orders"
+            link="/admin/orders"
+          />
+        </section>
+        <section className="mt-5 shadow-md">
+          <ProductTable
+            products={dashboardData?.newProducts}
+            title="Next Products"
+            link="/admin/products"
+          />
+        </section>
+        <section className="mt-5 shadow-md">
+          <UsersTable
+            customers={dashboardData?.newUsers}
+            title="New Customers"
+            link="/admin/customers"
+          />
         </section>
       </main>
     </Container>

@@ -6,10 +6,7 @@ const db = () => {
   }
 
   mongoose
-    .connect(process.env.NEXT_PUBLIC_MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+    .connect(process.env.NEXT_PUBLIC_MONGODB_URI)
     .then((con) => console.log("Connected to MongoDB"));
 };
 

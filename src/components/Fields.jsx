@@ -117,118 +117,22 @@ export const CheckboxField = ({
 }) => {
   return (
     <div className={`${className} relative`}>
-      <div className="flex items-center">
+      <div className="flex items-center cursor-pointer">
         <input
           id={id}
           type="checkbox"
           name={name}
           checked={checked}
-          defaultChecked={checked}
           {...props}
-          className="w-5 h-5 text-green-600 border-gray-300 focus:ring-green"
+          className="w-5 h-5 border-gray-300 cursor-pointer text-primary focus:ring-primary"
           onChange={onOptionChange}
         />
         <label
           htmlFor={id}
-          className="block ml-3 text-sm font-semibold text-graydark dark:text-gray-default md:text-base"
+          className="block ml-3 text-sm font-semibold cursor-pointer text-graydark dark:text-gray-default md:text-base"
         >
           {label}
         </label>
-      </div>
-    </div>
-  );
-};
-
-export const RadioGroupField = ({
-  id,
-  label,
-  options,
-  selectedOption,
-  onOptionChange,
-  name,
-  className = "",
-  ...props
-}) => {
-  const handleOnChange = (event) => {
-    const { value } = event.target;
-    onOptionChange({ name, value });
-  };
-  return (
-    <div className={`${className} relative`}>
-      {label && <Label id={id}>{label}:</Label>}
-      <div className="flex flex-wrap items-center gap-4 mt-1">
-        {options.map((option) => (
-          <div key={option} className="flex items-center cursor-pointer">
-            <input
-              id={`${name}_${option}`}
-              name={name}
-              type="radio"
-              value={option}
-              checked={selectedOption === option}
-              onChange={handleOnChange}
-              className="w-5 h-5 text-green-600 border-gray-300 cursor-pointer focus:ring-green-500"
-              {...props}
-            />
-            <label
-              htmlFor={`${name}_${option}`}
-              className="block ml-1 text-sm font-medium cursor-pointer md:text-base dark:text-gray-default text-graydark"
-            >
-              {option}
-            </label>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export const CheckboxGroupField = ({
-  id,
-  label,
-  options,
-  checkedOptions,
-  onCheckboxChange,
-  className = "",
-  name,
-  ...props
-}) => {
-  const handleCheckboxChange = (event) => {
-    const { value, checked } = event.target;
-
-    if (checked) {
-      onCheckboxChange({ name, value: [...checkedOptions, value] });
-    } else {
-      onCheckboxChange({
-        name,
-        value: checkedOptions.filter((option) => option !== value),
-      });
-    }
-  };
-
-  return (
-    <div className={`${className} relative`}>
-      {label && <Label id={id}>{label}:</Label>}
-      <div className="flex flex-wrap items-center gap-5">
-        {options.map((option) => (
-          <div key={option} className="flex items-center cursor-pointer">
-            <input
-              id={`${name}_${option}`}
-              name={name}
-              type="checkbox"
-              value={option}
-              checked={checkedOptions.includes(option)}
-              onChange={handleCheckboxChange}
-              className="w-5 h-5 text-green-600 border-gray-300 cursor-pointer focus:ring-green-500"
-              {...props}
-            />
-            <label
-              htmlFor={`${name}_${option}`}
-              className="block ml-1 text-sm font-medium cursor-pointer md:text-base dark:text-gray-default text-graydark"
-            >
-              {option}
-            </label>
-          </div>
-        ))}
       </div>
     </div>
   );
@@ -263,56 +167,6 @@ export const SelectField = ({
           </option>
         ))}
       </select>
-    </div>
-  );
-};
-
-export const FileField = ({
-  id,
-  label,
-  className = "",
-  name,
-  value,
-  onChange,
-  ...props
-}) => {
-  return (
-    <div className={`${className} relative`}>
-      {label && <Label id={id}>{label}:</Label>}
-      <input
-        id={id}
-        name={name}
-        type="file"
-        value={value}
-        onChange={onChange}
-        className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md shadow-sm border-green focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
-        {...props}
-      />
-    </div>
-  );
-};
-
-export const SearchField = ({
-  id,
-  label,
-  className = "",
-  name,
-  value,
-  onChange,
-  ...props
-}) => {
-  return (
-    <div className={`${className} relative`}>
-      {label && <Label id={id}>{label}:</Label>}
-      <input
-        id={id}
-        name={name}
-        type="search"
-        value={value}
-        onChange={onChange}
-        className="block w-full px-3 py-2 mt-1 text-gray-700 border rounded-md shadow-sm border-green focus:outline-none focus:ring-green focus:border-green-300 sm:text-sm"
-        {...props}
-      />
     </div>
   );
 };

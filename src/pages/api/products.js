@@ -2,11 +2,11 @@ import nc from "next-connect";
 
 import onError from "@/middlewares/errors";
 import db from "@/config/db";
-import { getAllEcoSpecialProducts } from "@/controllers/productControllers";
+import { getAllProducts } from "@/controllers/productControllers";
 
 const handler = nc({ onError });
 db();
 
-handler.get(getAllEcoSpecialProducts);
+handler.get(getAllProducts);
 
 export default handler;

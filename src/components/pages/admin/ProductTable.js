@@ -1,5 +1,6 @@
 import { Button } from "@/components/Button";
 import { formateMoney } from "@/tools/importantTools";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -7,7 +8,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const NewOrderTable = ({ orders = [], title = "", link }) => {
+const ProductTable = ({ products = [], title = "", link }) => {
   return (
     <div className="px-4 py-5 sm:px-6 lg:px-8">
       <div className="items-center pb-4 border-b sm:flex">
@@ -19,7 +20,7 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
         <div>
           {link && (
             <Button href={link} color="cyan">
-              All Orders
+              All products
             </Button>
           )}
         </div>
@@ -34,32 +35,33 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
                     scope="col"
                     className="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
                   >
-                    Name
+                    Image
                   </th>
                   <th
                     scope="col"
                     className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
                   >
-                    Phone Number
+                    Brand
+                  </th>
+                  <th
+                    scope="col"
+                    className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
+                  >
+                    Category
                   </th>
                   <th
                     scope="col"
                     className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
                   >
-                    Order Status
+                    Price
                   </th>
                   <th
                     scope="col"
                     className="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
                   >
-                    Total Items
+                    Eco Special
                   </th>
-                  <th
-                    scope="col"
-                    className="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-                  >
-                    Total price
-                  </th>
+
                   <th
                     scope="col"
                     className="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-3 pr-4 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
@@ -69,88 +71,84 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order, personIdx) => (
+                {products.map((product, personIdx) => (
                   <tr key={personIdx}>
                     <td
                       className={classNames(
-                        personIdx !== orders.length - 1
+                        personIdx !== products.length - 1
                           ? "border-b border-gray-200"
                           : "",
                         "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"
                       )}
                     >
-                      {order?.shipping_address?.reciever_name}
+                      <Image
+                        src={product?.image}
+                        alt={product?.name}
+                        width={100}
+                        height={100}
+                        className="object-cover rounded-md shadow-sm "
+                      />
                     </td>
                     <td
                       className={classNames(
-                        personIdx !== orders.length - 1
+                        personIdx !== products.length - 1
                           ? "border-b border-gray-200"
                           : "",
                         "whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell"
                       )}
                     >
-                      {order?.shipping_address?.phone_number}
+                      {product?.brand}
                     </td>
                     <td
                       className={classNames(
-                        personIdx !== orders.length - 1
+                        personIdx !== products.length - 1
                           ? "border-b border-gray-200"
                           : "",
                         "whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"
                       )}
                     >
-                      {order?.order_status === "pending" ? (
-                        <span className="px-4 py-1 bg-yellow-600 text-gray-950 rounded-xl bg-opacity-40">
-                          Pending
-                        </span>
-                      ) : order?.order_status === "processing" ? (
-                        <span className="px-4 py-1 text-white bg-gray-950 rounded-xl bg-opacity-40">
-                          Processing
-                        </span>
-                      ) : order?.order_status === "completed" ? (
+                      {product?.category}
+                    </td>
+                    <td
+                      className={classNames(
+                        personIdx !== products.length - 1
+                          ? "border-b border-gray-200"
+                          : "",
+                        "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                      )}
+                    >
+                      {formateMoney(product?.price)}
+                    </td>
+                    <td
+                      className={classNames(
+                        personIdx !== products.length - 1
+                          ? "border-b border-gray-200"
+                          : "",
+                        "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                      )}
+                    >
+                      {product?.isEcoSpecial ? (
                         <span className="px-4 py-1 bg-green-600 text-gray-950 rounded-xl bg-opacity-40">
-                          Completed
+                          Yes
                         </span>
                       ) : (
                         <span className="px-4 py-1 bg-red-600 text-gray-950 rounded-xl bg-opacity-40">
-                          Cancelled
+                          No
                         </span>
                       )}
                     </td>
                     <td
                       className={classNames(
-                        personIdx !== orders.length - 1
-                          ? "border-b border-gray-200"
-                          : "",
-                        "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                      )}
-                    >
-                      {order?.order_items
-                        ?.map((item) => item.qty)
-                        .reduce((total, qty) => (total += qty), 0)}
-                    </td>
-                    <td
-                      className={classNames(
-                        personIdx !== orders.length - 1
-                          ? "border-b border-gray-200"
-                          : "",
-                        "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
-                      )}
-                    >
-                      {formateMoney(order?.total_price)}
-                    </td>
-                    <td
-                      className={classNames(
-                        personIdx !== orders.length - 1
+                        personIdx !== products.length - 1
                           ? "border-b border-gray-200"
                           : "",
                         "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-8 lg:pr-8"
                       )}
                     >
-                      <Link href={`/admin/orders/${order?._id}`}>
+                      <Link href={`/admin/products/${product?._id}`}>
                         View
                         <span className="sr-only">
-                          , {order?.payment_method}
+                          , {product?.payment_method}
                         </span>
                       </Link>
                     </td>
@@ -165,4 +163,4 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
   );
 };
 
-export default NewOrderTable;
+export default ProductTable;

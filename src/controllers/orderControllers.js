@@ -7,7 +7,6 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
   const { order_items, shipping_address, payment_method, total_price } =
     req.body;
 
-  console.log(req.user);
   const user = await User.findOne({ email: req.user.email });
 
   const order = await Order.create({

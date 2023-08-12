@@ -12,11 +12,15 @@ const getDashboardAnalytics = catchAsyncErrors(async (req, res, next) => {
 
   const productsCount = await Product.count();
 
-  const pendingOrdersCount = await Order.count({ is_delivered: false });
+  const pendingOrdersCount = await Order.count({ order_status: "pending" });
 
   const newOrders = await Order.find({ is_delivered: false })
     .sort({ createdAt: -1 })
     .limit(10);
+
+  const newUsers = await User.find().sort({ createdAt: -1 }).limit(10);
+
+  const newProducts = await Product.find().sort({ createdAt: -1 }).limit(10);
 
   const orders = await Order.find();
   //INFO: Counting Total Products Purchased
@@ -44,8 +48,57 @@ const getDashboardAnalytics = catchAsyncErrors(async (req, res, next) => {
       totalRevenue,
       pendingOrdersCount,
       newOrders,
+      newUsers,
+      newProducts,
     },
   });
 });
 
-export { getDashboardAnalytics };
+const updateOrderDetails = catchAsyncErrors(async (req, res, next) => {
+  const { orderId } = req.query;
+  const { order_status, is_delivered } = req.body;
+
+  const updatedOrder = await Order.findByIdAndUpdate(orderId, {
+    order_status,
+    is_delivered,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Order updated successfully",
+    data: {
+      order: updatedOrder,
+    },
+  });
+});
+
+const getLetestOrders = catchAsyncErrors(async (req, res, next) => {
+  const orders = await Order.find().sort({ createdAt: -1 }).limit(30);
+
+  res.status(200).json({
+    success: true,
+    message: "Operation performed successfully",
+    data: {
+      orders,
+    },
+  });
+});
+
+const getLetestUsers = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find().sort({ createdAt: -1 }).limit(30);
+
+  res.status(200).json({
+    success: true,
+    message: "Operation performed successfully",
+    data: {
+      users,
+    },
+  });
+});
+
+export {
+  getDashboardAnalytics,
+  updateOrderDetails,
+  getLetestOrders,
+  getLetestUsers,
+};

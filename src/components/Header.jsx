@@ -174,7 +174,10 @@ export function Header() {
                         <AiOutlineUser className="w-6 h-6 text-gray-700" />
                       </Popover.Button>
 
-                      <Popover.Panel className="absolute right-0 z-10 max-w-sm mt-2 bg-white border w-52 top-5">
+                      <Popover.Panel
+                        className="absolute right-0 max-w-sm mt-2 bg-white border shadow-md w-52 top-5"
+                        style={{ zIndex: 95995 }}
+                      >
                         <div className="grid w-full grid-cols-1 px-2 py-2">
                           <Link
                             className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
