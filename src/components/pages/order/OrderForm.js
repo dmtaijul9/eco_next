@@ -102,6 +102,7 @@ const OrderForm = ({ total }) => {
       { variables },
       {
         onSuccess: (data) => {
+          //INFO: if success then show success and redirect to home
           toast.success("Order created successfully");
           reset();
           setCartItems({ items: [], totalItem: 0 });
@@ -109,6 +110,7 @@ const OrderForm = ({ total }) => {
           router.push(`/order/confirmed/${data?.data?.order._id}`);
         },
         onError: (error) => {
+          //INFO: if error then show error
           toast.error(error.response.data.message);
         },
       }

@@ -9,13 +9,16 @@ function classNames(...classes) {
 }
 
 const UsersTable = ({ customers = [], title = "", link, refetch }) => {
+  //INFO: Update user mutation
   const { mutate, isLoading } = useMutation({
     mutationKey: "updateUser",
     mutationFn: updateUserMutation,
   });
 
+  //INFO: current updating user id state
   const [updatingId, setUpdatingId] = React.useState(null);
 
+  //INFO: handle update user
   const handleUpdate = ({ id, role }) => {
     setUpdatingId(id);
     mutate(

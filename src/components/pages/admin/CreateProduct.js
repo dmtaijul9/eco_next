@@ -42,13 +42,18 @@ const CreateProduct = () => {
     resolver: yupResolver(createProductSchema),
   });
 
+  //INFO: Create product mutation
   const { mutate, isLoading: creating } = useMutation({
     mutationKey: "createProduct",
     mutationFn: createProductMutation,
   });
 
+  //INFO: Image change handler
   const onImageChange = (e) => {
+    //INFO: Image preview
     const reader = new FileReader();
+
+    //INFO: Set image preview and product form image
     reader.onload = () => {
       if (reader.readyState === 2) {
         setImagePreview(reader.result);
@@ -60,6 +65,7 @@ const CreateProduct = () => {
       }
     };
 
+    //INFO: Read image as data url
     reader.readAsDataURL(e.target.files[0]);
   };
 
