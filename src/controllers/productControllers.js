@@ -41,7 +41,9 @@ const createProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 const getAllEcoSpecialProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await Product.find({ isEcoSpecial: true });
+  const products = await Product.find({ isEcoSpecial: true }).sort(
+    "-createdAt"
+  );
 
   res.status(200).json({
     success: true,

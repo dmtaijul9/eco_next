@@ -5,7 +5,9 @@ import PageLoader from "@/components/PageLoader";
 import { formateMoney } from "@/tools/importantTools";
 import { getMyOrdersQuery } from "@/utils/resolvers/query";
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 function classNames(...classes) {
@@ -13,6 +15,13 @@ function classNames(...classes) {
 }
 
 const MyOrders = () => {
+  const router = useRouter();
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/login");
+    },
+  });
   const { isLoading, data, isError } = useQuery({
     queryKey: ["myOrders"],
     queryFn: getMyOrdersQuery,
@@ -22,6 +31,11 @@ const MyOrders = () => {
 
   if (isLoading) {
     return <PageLoader />;
+  }
+
+  if (isError) {
+    router.push("/500");
+    return <div>error</div>;
   }
 
   return (

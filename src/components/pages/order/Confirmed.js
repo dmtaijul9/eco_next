@@ -2,6 +2,7 @@ import PageLoader from "@/components/PageLoader";
 import { formateMoney } from "@/tools/importantTools";
 import { getSingleOrderQuery } from "@/utils/resolvers/query";
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -10,6 +11,13 @@ const Confirmed = () => {
   const router = useRouter();
   //INFO: Order id from url
   const { orderId } = router.query;
+
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated: () => {
+      router.push("/login");
+    },
+  });
 
   //INFO: Get single order query
   const { isLoading, isError, data } = useQuery({

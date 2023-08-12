@@ -8,8 +8,10 @@ import React from "react";
 import NewOrderTable from "./NewOrderTable";
 import UsersTable from "./UserTable";
 import ProductTable from "./ProductTable";
+import { useRouter } from "next/router";
 
 const DashboardPage = () => {
+  const router = useRouter();
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated: () => {
@@ -26,6 +28,11 @@ const DashboardPage = () => {
 
   if (status === "loading" || isLoading) {
     return <PageLoader />;
+  }
+
+  if (isError) {
+    router.push("/500");
+    return <div>Error</div>;
   }
 
   return (

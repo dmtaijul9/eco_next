@@ -10,22 +10,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/reducers/cartSlice";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const total = "$341.68";
 
 export default function CheckoutPage() {
+  const router = useRouter();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated: () => {
+      router.push("/login");
+    },
+  });
+  //INFO: This is a custom hook that will save the cart items in the local storage
   const [localCartItems, setCartItems] = useLocalStorage("CART", {
     items: [],
     totalItem: 0,
   });
+
+  //INFO: This is a redux hook that will get the cart items from the redux store
   const cartItems = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
+  //INFO: counting total price of the cart items
   const totalPrice = cartItems?.items
     ?.map((item) => item.price * item.quantity)
     .reduce((total, item) => (total += item), 0);
 
+  //INFO: This function will remove an item from the cart
   const handleRemoveItemFromCart = (product) => {
+    //INFO: This will remove the item from the local storage
     const newCartItems = {
       items: cartItems?.items?.filter((item) => item._id !== product._id),
       totalItem: cartItems?.totalItem - product.quantity,

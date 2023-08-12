@@ -1,9 +1,6 @@
 import ErrorHandler from "@/utils/errorHandler";
 import catchAsyncErrors from "@/middlewares/catchAsyncErrors";
 import User from "@/models/user";
-import sendEmail from "@/utils/sendEmail";
-import crypto from "crypto";
-import absoluteUrl from "next-absolute-url";
 import bcrypt from "bcryptjs";
 import { removeLeadingDigits } from "@/tools/removeLeadingDigits";
 

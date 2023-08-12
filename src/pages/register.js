@@ -14,11 +14,13 @@ import { useMutation } from "@tanstack/react-query";
 import { registerMutation } from "@/utils/resolvers/mutation";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Register() {
   //INFO: Phone Number state
   const [phoneNumber, setPhoneNumber] = useState("");
   const { status, data: session } = useSession();
+  const router = useRouter();
 
   //INFO: Password secondary state to check strong
   const [pwdInput, initValue] = useState({
@@ -84,6 +86,7 @@ export default function Register() {
           reset();
           setPhoneNumber(null);
           toast.success(data.message);
+          router.push("/login");
         },
         onError: (error) => {
           toast.error(error?.response?.data?.message);
