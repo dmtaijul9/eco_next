@@ -7,7 +7,6 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
   const { order_items, shipping_address, payment_method, total_price } =
     req.body;
 
-  console.log(req.user);
   const user = await User.findOne({ email: req.user.email });
 
   const order = await Order.create({
@@ -48,4 +47,15 @@ const getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-export { createNewOrder, getSingleOrder };
+const getMyOrders = catchAsyncErrors(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id });
+
+  res.status(200).json({
+    success: true,
+    message: "Order created successfully",
+    data: {
+      orders,
+    },
+  });
+});
+export { createNewOrder, getMyOrders, getSingleOrder };

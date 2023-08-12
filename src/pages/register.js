@@ -13,14 +13,24 @@ import StrengthMeter from "@/components/StrengthMeter";
 import { useMutation } from "@tanstack/react-query";
 import { registerMutation } from "@/utils/resolvers/mutation";
 import { toast } from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Register() {
+  //INFO: Phone Number state
   const [phoneNumber, setPhoneNumber] = useState("");
+  const { status, data: session } = useSession();
+  const router = useRouter();
+
+  //INFO: Password secondary state to check strong
   const [pwdInput, initValue] = useState({
     password: "",
   });
+
+  //INFO: Password strong state
   const [isStrong, initRobustPassword] = useState(null);
 
+  //INFO: Password strong check function and change state
   const onChange = (e) => {
     let password = e.target.value;
     initValue({
@@ -29,10 +39,12 @@ export default function Register() {
     });
   };
 
+  //INFO: Password strong check function and change state
   const initPwdInput = async (childData) => {
     initRobustPassword(childData);
   };
 
+  //INFO: Register mutation
   const { mutate, isLoading } = useMutation({
     mutationKey: "register",
     mutationFn: registerMutation,
@@ -56,11 +68,12 @@ export default function Register() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    //INFO: Check password strong
     if (!isStrong) {
       return toast.error("Password is not strong enough");
     }
 
+    //INFO: Check phone number is valid or not
     if (data.phone.length < 13) {
       return toast.error("Phone number is not valid");
     }
@@ -73,14 +86,19 @@ export default function Register() {
           reset();
           setPhoneNumber(null);
           toast.success(data.message);
+          router.push("/login");
         },
         onError: (error) => {
-          console.log(error);
           toast.error(error?.response?.data?.message);
         },
       }
     );
   };
+
+  //INFO: If user is authenticated redirect to home page
+  if (status === "authenticated") {
+    router.push("/");
+  }
 
   return (
     <AuthLayout

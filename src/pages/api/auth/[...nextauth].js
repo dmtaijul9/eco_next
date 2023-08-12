@@ -49,8 +49,8 @@ export default NextAuth({
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
-        const { _id, first_name, last_name, email, phone } = user;
-        token.user = { _id, first_name, last_name, email, phone };
+        const { _id, first_name, last_name, email, phone, role } = user;
+        token.user = { _id, first_name, last_name, email, phone, role };
       }
       return token;
     },

@@ -1,9 +1,6 @@
 import ErrorHandler from "@/utils/errorHandler";
 import catchAsyncErrors from "@/middlewares/catchAsyncErrors";
 import User from "@/models/user";
-import sendEmail from "@/utils/sendEmail";
-import crypto from "crypto";
-import absoluteUrl from "next-absolute-url";
 import bcrypt from "bcryptjs";
 import { removeLeadingDigits } from "@/tools/removeLeadingDigits";
 
@@ -44,4 +41,27 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-export { registerUser };
+const updateUserMutation = catchAsyncErrors(async (req, res, next) => {
+  const { userId } = req.query;
+
+  const { first_name, last_name, email, phone, password, role } = req.body;
+
+  const variables = {};
+  if (role) variables.role = role;
+  if (first_name) variables.first_name = first_name;
+  if (last_name) variables.last_name = last_name;
+  if (email) variables.email = email;
+  if (phone) variables.phone = phone;
+
+  const updatedUser = await User.findByIdAndUpdate(userId, variables);
+
+  res.status(200).json({
+    success: true,
+    message: "User updated successfully",
+    data: {
+      updatedUser,
+    },
+  });
+});
+
+export { registerUser, updateUserMutation };

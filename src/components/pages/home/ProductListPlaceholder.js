@@ -1,6 +1,7 @@
 import React from "react";
 
 const ProductListPlaceholder = () => {
+  //INFO: Product list placeholder
   return (
     <div className="grid w-full grid-cols-1 gap-6 mt-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <div className="relative w-full p-4 overflow-hidden bg-white rounded-lg shadow hover:shadow-md">

@@ -4,6 +4,7 @@ import { CirclesBackground } from "@/components/CirclesBackground";
 import Logo from "@/icons/Logo";
 
 export function AuthLayout({ title, subtitle, children }) {
+  // children is a prop that can be passed to the AuthLayout component to render its children
   return (
     <main className="flex min-h-full pt-16 overflow-hidden sm:py-28">
       <div className="flex flex-col w-full max-w-2xl px-4 mx-auto sm:px-6">
@@ -12,7 +13,7 @@ export function AuthLayout({ title, subtitle, children }) {
           aria-label="Home"
           className="flex items-center justify-center"
         >
-          <Logo className="w-auto h-10 mx-auto" text />
+          <Logo className="w-auto h-10 mx-auto text-primary" text />
         </Link>
         <div className="relative mt-12 sm:mt-16">
           <CirclesBackground

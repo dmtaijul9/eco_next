@@ -2,6 +2,17 @@ import catchAsyncErrors from "./catchAsyncErrors";
 import ErrorHandler from "../utils/errorHandler";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
+import User from "@/models/user";
+
+export const isAdmin = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findOne({ email: req.user.email });
+
+  if (user.role !== "ADMIN") {
+    return next(new ErrorHandler("Only admin can access this resource.", 403));
+  }
+
+  next();
+});
 
 export const isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   let session;

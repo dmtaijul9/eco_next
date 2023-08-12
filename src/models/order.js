@@ -46,6 +46,12 @@ const orderSchema = mongoose.Schema(
       default: 0.0,
     },
 
+    order_status: {
+      type: String,
+      required: true,
+      default: "pending",
+    },
+
     is_delivered: {
       type: Boolean,
       required: true,

@@ -4,7 +4,7 @@ const db = () => {
   }
 
   mongoose
-    .connect("mongodb://localhost:27017/eco_next", {
+    .connect(process.env.NEXT_PUBLIC_MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
@@ -29,7 +29,9 @@ const importData = async () => {
       return { ...product, user: "64d5cd0d77a85ea216aab568" };
     });
 
-    await Product.insertMany(addedUserProducts);
+    const data = await Product.insertMany(addedUserProducts);
+
+    console.log(data);
 
     console.log("Data inserted Successfully");
     process.exit();

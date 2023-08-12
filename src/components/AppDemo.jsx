@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
-import { useId, useRef, useState } from 'react'
-import clsx from 'clsx'
-import { motion, useInView, useMotionValue } from 'framer-motion'
+import { useId, useRef, useState } from "react";
+import clsx from "clsx";
+import { motion, useInView, useMotionValue } from "framer-motion";
 
-import { AppScreen } from '@/components/AppScreen'
+import { AppScreen } from "@/components/AppScreen";
 
 const prices = [
   997.56, 944.34, 972.25, 832.4, 888.76, 834.8, 805.56, 767.38, 861.21, 669.6,
   694.39, 721.32, 694.03, 610.1, 502.2, 549.56, 611.03, 583.4, 610.14, 660.6,
   752.11, 721.19, 638.89, 661.7, 694.51, 580.3, 638.0, 613.3, 651.64, 560.51,
   611.45, 670.68, 752.56,
-]
-const maxPrice = Math.max(...prices)
-const minPrice = Math.min(...prices)
+];
+const maxPrice = Math.max(...prices);
+const minPrice = Math.min(...prices);
 
 function Chart({
   className,
@@ -26,55 +26,55 @@ function Chart({
   gridLines = 6,
   ...props
 }) {
-  let width = totalWidth - paddingX * 2
-  let height = totalHeight - paddingY * 2
+  let width = totalWidth - paddingX * 2;
+  let height = totalHeight - paddingY * 2;
 
-  let id = useId()
-  let svgRef = useRef()
-  let pathRef = useRef()
-  let isInView = useInView(svgRef, { amount: 0.5, once: true })
-  let pathWidth = useMotionValue(0)
-  let [interactionEnabled, setInteractionEnabled] = useState(false)
+  let id = useId();
+  let svgRef = useRef();
+  let pathRef = useRef();
+  let isInView = useInView(svgRef, { amount: 0.5, once: true });
+  let pathWidth = useMotionValue(0);
+  let [interactionEnabled, setInteractionEnabled] = useState(false);
 
-  let path = ''
-  let points = []
+  let path = "";
+  let points = [];
 
   for (let index = 0; index < prices.length; index++) {
-    let x = paddingX + (index / (prices.length - 1)) * width
+    let x = paddingX + (index / (prices.length - 1)) * width;
     let y =
       paddingY +
-      (1 - (prices[index] - minPrice) / (maxPrice - minPrice)) * height
-    points.push({ x, y })
-    path += `${index === 0 ? 'M' : 'L'} ${x.toFixed(4)} ${y.toFixed(4)}`
+      (1 - (prices[index] - minPrice) / (maxPrice - minPrice)) * height;
+    points.push({ x, y });
+    path += `${index === 0 ? "M" : "L"} ${x.toFixed(4)} ${y.toFixed(4)}`;
   }
 
   return (
     <svg
       ref={svgRef}
       viewBox={`0 0 ${totalWidth} ${totalHeight}`}
-      className={clsx(className, 'overflow-visible')}
+      className={clsx(className, "overflow-visible")}
       {...(interactionEnabled
         ? {
             onPointerLeave: () => onChangeActivePointIndex(null),
             onPointerMove: (event) => {
-              let x = event.nativeEvent.offsetX
-              let closestPointIndex
-              let closestDistance = Infinity
+              let x = event.nativeEvent.offsetX;
+              let closestPointIndex;
+              let closestDistance = Infinity;
               for (
                 let pointIndex = 0;
                 pointIndex < points.length;
                 pointIndex++
               ) {
-                let point = points[pointIndex]
-                let distance = Math.abs(point.x - x)
+                let point = points[pointIndex];
+                let distance = Math.abs(point.x - x);
                 if (distance < closestDistance) {
-                  closestDistance = distance
-                  closestPointIndex = pointIndex
+                  closestDistance = distance;
+                  closestPointIndex = pointIndex;
                 } else {
-                  break
+                  break;
                 }
               }
-              onChangeActivePointIndex(closestPointIndex)
+              onChangeActivePointIndex(closestPointIndex);
             },
           }
         : {})}
@@ -117,13 +117,13 @@ function Chart({
         strokeLinejoin="round"
         initial={{ pathLength: 0 }}
         transition={{ duration: 1 }}
-        {...(isInView ? { stroke: '#06b6d4', animate: { pathLength: 1 } } : {})}
+        {...(isInView ? { stroke: "#06b6d4", animate: { pathLength: 1 } } : {})}
         onUpdate={({ pathLength }) => {
           pathWidth.set(
             pathRef.current.getPointAtLength(
               pathLength * pathRef.current.getTotalLength()
             ).x
-          )
+          );
         }}
         onAnimationComplete={() => setInteractionEnabled(true)}
       />
@@ -148,18 +148,18 @@ function Chart({
         </>
       )}
     </svg>
-  )
+  );
 }
 
 export function AppDemo() {
-  let [activePointIndex, setActivePointIndex] = useState(null)
-  let activePriceIndex = activePointIndex ?? prices.length - 1
-  let activeValue = prices[activePriceIndex]
-  let previousValue = prices[activePriceIndex - 1]
+  let [activePointIndex, setActivePointIndex] = useState(null);
+  let activePriceIndex = activePointIndex ?? prices.length - 1;
+  let activeValue = prices[activePriceIndex];
+  let previousValue = prices[activePriceIndex - 1];
   let percentageChange =
     activePriceIndex === 0
       ? null
-      : ((activeValue - previousValue) / previousValue) * 100
+      : ((activeValue - previousValue) / previousValue) * 100;
 
   return (
     <AppScreen>
@@ -170,7 +170,7 @@ export function AppDemo() {
               Tailwind Labs, Inc.
             </div>
             <div className="text-sm text-gray-900">$CSS</div>
-            <svg viewBox="0 0 24 24" className="ml-auto h-6 w-6" fill="none">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 ml-auto" fill="none">
               <path
                 d="M5 12a7 7 0 1 1 14 0 7 7 0 0 1-14 0ZM12 9v6M15 12H9"
                 stroke="#171717"
@@ -180,26 +180,26 @@ export function AppDemo() {
               />
             </svg>
           </div>
-          <div className="mt-3 border-t border-gray-200 pt-5">
+          <div className="pt-5 mt-3 border-t border-gray-200">
             <div className="flex items-baseline gap-2">
-              <div className="text-2xl tabular-nums tracking-tight text-gray-900">
+              <div className="text-2xl tracking-tight text-gray-900 tabular-nums">
                 {activeValue.toFixed(2)}
               </div>
               <div className="text-sm text-gray-900">USD</div>
               {percentageChange && (
                 <div
                   className={clsx(
-                    'ml-auto text-sm tabular-nums tracking-tight',
-                    percentageChange >= 0 ? 'text-cyan-500' : 'text-gray-500'
+                    "ml-auto text-sm tabular-nums tracking-tight",
+                    percentageChange >= 0 ? "text-cyan-500" : "text-gray-500"
                   )}
                 >
                   {`${
-                    percentageChange >= 0 ? '+' : ''
+                    percentageChange >= 0 ? "+" : ""
                   }${percentageChange.toFixed(2)}%`}
                 </div>
               )}
             </div>
-            <div className="mt-6 flex gap-4 text-xs text-gray-500">
+            <div className="flex gap-4 mt-6 text-xs text-gray-500">
               <div>1D</div>
               <div>5D</div>
               <div className="font-semibold text-cyan-600">1M</div>
@@ -217,10 +217,10 @@ export function AppDemo() {
                 onChangeActivePointIndex={setActivePointIndex}
               />
             </div>
-            <div className="mt-4 rounded-lg bg-cyan-500 px-4 py-2 text-center text-sm font-semibold text-white">
+            <div className="px-4 py-2 mt-4 text-sm font-semibold text-center text-white rounded-lg bg-cyan-500">
               Trade
             </div>
-            <div className="mt-3 divide-y divide-gray-100 text-sm">
+            <div className="mt-3 text-sm divide-y divide-gray-100">
               <div className="flex justify-between py-1">
                 <div className="text-gray-500">Open</div>
                 <div className="font-medium text-gray-900">6,387.55</div>
@@ -238,5 +238,5 @@ export function AppDemo() {
         </div>
       </AppScreen.Body>
     </AppScreen>
-  )
+  );
 }

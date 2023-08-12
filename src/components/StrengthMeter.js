@@ -5,6 +5,7 @@ import {
 } from "react-icons/bs";
 
 const StrengthMeter = ({ password, actions }) => {
+  //INFO: Password strength checker
   const [lucase, setLucase] = useState(false);
   const [num, setNum] = useState(false);
   const [special, setSpecial] = useState(false);
@@ -12,6 +13,7 @@ const StrengthMeter = ({ password, actions }) => {
   const [passwordValue, setPasswordValue] = useState(0);
   const [passwordStrength, setPasswordStrength] = useState("");
 
+  //INFO: Password strength checker
   const initPwdChecker = () => {
     const strength = ["", "weak", "fair", "good", "strong"];
     let pwdCheck = 0;
@@ -45,6 +47,7 @@ const StrengthMeter = ({ password, actions }) => {
     actions(strength[pwdCheck]);
   };
 
+  //INFO: Password strength checker
   useEffect(() => {
     initPwdChecker();
   }, [password]);

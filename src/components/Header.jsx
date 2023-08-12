@@ -1,154 +1,26 @@
 import React, { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import { AiOutlineUser } from "react-icons/ai";
 
 const navigation = {
-  categories: [
-    {
-      id: "women",
-      name: "Women",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
-          imageAlt:
-            "Models sitting back to back, wearing Basic Tee in black and bone.",
-        },
-        {
-          name: "Basic Tees",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
-          imageAlt:
-            "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "men",
-      name: "Men",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
-        },
-        {
-          name: "Artwork Tees",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
-          imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
-  ],
+  pages: [{ name: "Stores", href: "/shop" }],
 };
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "@/icons/Logo";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import CartNav from "./CartNav";
+import { Button } from "./Button";
+import { useRouter } from "next/router";
 
 export function Header() {
-  const { data: session, status } = useSession({
-    required: true,
-  });
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-white " style={{ zIndex: 9000 }}>
+    <div className="bg-white " style={{ zIndex: 900 }}>
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -193,91 +65,6 @@ export function Header() {
                 </div>
 
                 {/* Links */}
-                <Tab.Group as="div" className="mt-2">
-                  <div className="border-b border-gray-200">
-                    <Tab.List className="flex px-4 -mb-px space-x-8">
-                      {navigation.categories.map((category) => (
-                        <Tab
-                          key={category.name}
-                          className={({ selected }) =>
-                            classNames(
-                              selected
-                                ? "border-indigo-600 text-indigo-600"
-                                : "border-transparent text-gray-900",
-                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium"
-                            )
-                          }
-                        >
-                          {category.name}
-                        </Tab>
-                      ))}
-                    </Tab.List>
-                  </div>
-                  <Tab.Panels as={Fragment}>
-                    {navigation.categories.map((category) => (
-                      <Tab.Panel
-                        key={category.name}
-                        className="px-4 pt-10 pb-8 space-y-10"
-                      >
-                        <div className="grid grid-cols-2 gap-x-4">
-                          {category.featured.map((item) => (
-                            <div
-                              key={item.name}
-                              className="relative text-sm group"
-                            >
-                              <div className="overflow-hidden bg-gray-100 rounded-lg aspect-h-1 aspect-w-1 group-hover:opacity-75">
-                                <img
-                                  src={item.imageSrc}
-                                  alt={item.imageAlt}
-                                  className="object-cover object-center"
-                                />
-                              </div>
-                              <a
-                                href={item.href}
-                                className="block mt-6 font-medium text-gray-900"
-                              >
-                                <span
-                                  className="absolute inset-0 z-10"
-                                  aria-hidden="true"
-                                />
-                                {item.name}
-                              </a>
-                              <p aria-hidden="true" className="mt-1">
-                                Shop now
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                        {category.sections.map((section) => (
-                          <div key={section.name}>
-                            <p
-                              id={`${category.id}-${section.id}-heading-mobile`}
-                              className="font-medium text-gray-900"
-                            >
-                              {section.name}
-                            </p>
-                            <ul
-                              role="list"
-                              aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
-                              className="flex flex-col mt-6 space-y-6"
-                            >
-                              {section.items.map((item) => (
-                                <li key={item.name} className="flow-root">
-                                  <a
-                                    href={item.href}
-                                    className="block p-2 -m-2 text-gray-500"
-                                  >
-                                    {item.name}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </Tab.Panel>
-                    ))}
-                  </Tab.Panels>
-                </Tab.Group>
 
                 <div className="px-4 py-6 space-y-6 border-t border-gray-200">
                   {navigation.pages.map((page) => (
@@ -292,38 +79,26 @@ export function Header() {
                   ))}
                 </div>
 
-                <div className="px-4 py-6 space-y-6 border-t border-gray-200">
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="block p-2 -m-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
+                {status !== "authenticated" && (
+                  <div className="px-4 py-6 space-y-6 border-t border-gray-200">
+                    <div className="flow-root">
+                      <Link
+                        href="/login"
+                        className="block p-2 -m-2 font-medium text-gray-900"
+                      >
+                        Sign in
+                      </Link>
+                    </div>
+                    <div className="flow-root">
+                      <Link
+                        href="/register"
+                        className="block p-2 -m-2 font-medium text-gray-900"
+                      >
+                        Create account
+                      </Link>
+                    </div>
                   </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="block p-2 -m-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </a>
-                  </div>
-                </div>
-
-                <div className="px-4 py-6 border-t border-gray-200">
-                  <a href="#" className="flex items-center p-2 -m-2">
-                    <img
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      alt=""
-                      className="flex-shrink-0 block w-5 h-auto"
-                    />
-                    <span className="block ml-3 text-base font-medium text-gray-900">
-                      CAD
-                    </span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div>
+                )}
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -358,118 +133,6 @@ export function Header() {
               {/* Flyout menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="flex h-full space-x-8">
-                  {navigation.categories.map((category) => (
-                    <Popover key={category.name} className="flex">
-                      {({ open }) => (
-                        <>
-                          <div className="relative flex">
-                            <Popover.Button
-                              className={classNames(
-                                open
-                                  ? "border-indigo-600 text-indigo-600"
-                                  : "border-transparent text-gray-700 hover:text-gray-800",
-                                "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                              )}
-                            >
-                              {category.name}
-                            </Popover.Button>
-                          </div>
-
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-200"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="transition ease-in duration-150"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                          >
-                            <Popover.Panel className="absolute inset-x-0 text-sm text-gray-500 top-full">
-                              {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-                              <div
-                                className="absolute inset-0 bg-white shadow top-1/2"
-                                aria-hidden="true"
-                              />
-
-                              <div
-                                className="relative bg-white"
-                                style={{ zIndex: 9000 }}
-                              >
-                                <div className="px-8 mx-auto max-w-7xl">
-                                  <div className="grid grid-cols-2 py-16 gap-x-8 gap-y-10">
-                                    <div className="grid grid-cols-2 col-start-2 gap-x-8">
-                                      {category.featured.map((item) => (
-                                        <div
-                                          key={item.name}
-                                          className="relative text-base group sm:text-sm"
-                                        >
-                                          <div className="overflow-hidden bg-gray-100 rounded-lg aspect-h-1 aspect-w-1 group-hover:opacity-75">
-                                            <img
-                                              src={item.imageSrc}
-                                              alt={item.imageAlt}
-                                              className="object-cover object-center"
-                                            />
-                                          </div>
-                                          <a
-                                            href={item.href}
-                                            className="block mt-6 font-medium text-gray-900"
-                                          >
-                                            <span
-                                              className="absolute inset-0 z-10"
-                                              aria-hidden="true"
-                                            />
-                                            {item.name}
-                                          </a>
-                                          <p
-                                            aria-hidden="true"
-                                            className="mt-1"
-                                          >
-                                            Shop now
-                                          </p>
-                                        </div>
-                                      ))}
-                                    </div>
-                                    <div className="grid grid-cols-3 row-start-1 text-sm gap-x-8 gap-y-10">
-                                      {category.sections.map((section) => (
-                                        <div key={section.name}>
-                                          <p
-                                            id={`${section.name}-heading`}
-                                            className="font-medium text-gray-900"
-                                          >
-                                            {section.name}
-                                          </p>
-                                          <ul
-                                            role="list"
-                                            aria-labelledby={`${section.name}-heading`}
-                                            className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                          >
-                                            {section.items.map((item) => (
-                                              <li
-                                                key={item.name}
-                                                className="flex"
-                                              >
-                                                <a
-                                                  href={item.href}
-                                                  className="hover:text-gray-800"
-                                                >
-                                                  {item.name}
-                                                </a>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </Popover.Panel>
-                          </Transition>
-                        </>
-                      )}
-                    </Popover>
-                  ))}
-
                   {navigation.pages.map((page) => (
                     <a
                       key={page.name}
@@ -507,7 +170,51 @@ export function Header() {
                         </Link>
                       </div>
                     </>
-                  ) : null
+                  ) : (
+                    <Popover className="relative">
+                      <Popover.Button className="flex items-center ">
+                        <AiOutlineUser className="w-6 h-6 text-gray-700" />
+                      </Popover.Button>
+
+                      <Popover.Panel
+                        className="absolute right-0 max-w-sm mt-2 bg-white border shadow-md w-52 top-5"
+                        style={{ zIndex: 95995 }}
+                      >
+                        <div className="grid w-full grid-cols-1 px-2 py-2">
+                          <Link
+                            className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
+                            href="/dashboard/my-orders"
+                          >
+                            My Orders
+                          </Link>
+
+                          {
+                            // if user is admin then show admin link
+                            session?.user?.role === "ADMIN" && (
+                              <Link
+                                className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
+                                href="/admin/dashboard"
+                              >
+                                Admin Dashboard
+                              </Link>
+                            )
+                          }
+                          <Button
+                            color="danger"
+                            className="mt-2"
+                            onClick={() => {
+                              signOut({
+                                callbackUrl: `${window.location.origin}/login`,
+                                redirect: true,
+                              });
+                            }}
+                          >
+                            Logout
+                          </Button>
+                        </div>
+                      </Popover.Panel>
+                    </Popover>
+                  )
                 }
 
                 <CartNav />
