@@ -3,149 +3,20 @@ import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { AiOutlineUser } from "react-icons/ai";
 
 const navigation = {
-  categories: [
-    {
-      id: "women",
-      name: "Women",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
-          imageAlt:
-            "Models sitting back to back, wearing Basic Tee in black and bone.",
-        },
-        {
-          name: "Basic Tees",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
-          imageAlt:
-            "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "men",
-      name: "Men",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
-        },
-        {
-          name: "Artwork Tees",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
-          imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
-  ],
+  pages: [{ name: "Stores", href: "/shop" }],
 };
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Logo from "@/icons/Logo";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import CartNav from "./CartNav";
+import { Button } from "./Button";
+import { useRouter } from "next/router";
 
 export function Header() {
-  const { data: session, status } = useSession({
-    required: true,
-  });
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const [open, setOpen] = useState(false);
   return (
@@ -304,31 +175,37 @@ export function Header() {
                       </Popover.Button>
 
                       <Popover.Panel className="absolute right-0 z-10 max-w-sm mt-2 bg-white border w-52 top-5">
-                        <div className="grid w-full grid-cols-1">
+                        <div className="grid w-full grid-cols-1 px-2 py-2">
                           <Link
-                            className="w-full px-3 py-1 text-center hover:bg-gray-500"
+                            className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
                             href="/analytics"
                           >
-                            Analytics
+                            My Account
                           </Link>
                           <Link
-                            className="w-full px-3 py-1 text-center border-t hover:bg-gray-500"
+                            className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
                             href="/engagement"
                           >
-                            Engagement
+                            Order tracking
                           </Link>
                           <Link
-                            className="w-full px-3 py-1 text-center border-t hover:bg-gray-500"
+                            className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
                             href="/security"
                           >
                             Security
                           </Link>
-                          <Link
-                            className="w-full px-3 py-1 text-center border-t hover:bg-gray-500"
-                            href="/integrations"
+                          <Button
+                            color="danger"
+                            className="mt-2"
+                            onClick={() => {
+                              signOut({
+                                callbackUrl: `${window.location.origin}/login`,
+                                redirect: true,
+                              });
+                            }}
                           >
-                            Integrations
-                          </Link>
+                            Logout
+                          </Button>
                         </div>
                       </Popover.Panel>
                     </Popover>

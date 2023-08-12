@@ -12,7 +12,7 @@ export function AuthLayout({ title, subtitle, children }) {
           aria-label="Home"
           className="flex items-center justify-center"
         >
-          <Logo className="w-auto h-10 mx-auto" text />
+          <Logo className="w-auto h-10 mx-auto text-primary" text />
         </Link>
         <div className="relative mt-12 sm:mt-16">
           <CirclesBackground

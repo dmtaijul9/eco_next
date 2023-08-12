@@ -13,7 +13,7 @@ import { addToCart } from "@/redux/reducers/cartSlice";
 
 const total = "$341.68";
 
-export default function Example() {
+export default function CheckoutPage() {
   const [localCartItems, setCartItems] = useLocalStorage("CART", {
     items: [],
     totalItem: 0,
@@ -25,10 +25,10 @@ export default function Example() {
     ?.map((item) => item.price * item.quantity)
     .reduce((total, item) => (total += item), 0);
 
-  const handleRemoveItemFromCart = (id) => {
+  const handleRemoveItemFromCart = (product) => {
     const newCartItems = {
-      items: cartItems?.items?.filter((item) => item._id !== id),
-      totalItem: cartItems?.totalItem - 1,
+      items: cartItems?.items?.filter((item) => item._id !== product._id),
+      totalItem: cartItems?.totalItem - product.quantity,
     };
 
     setCartItems(newCartItems);
@@ -41,14 +41,14 @@ export default function Example() {
         <main className="justify-between py-10 lg:flex lg:min-h-full lg:flex-row-reverse lg:overflow-hidden">
           <div className="px-4 py-6 sm:px-6 lg:hidden">
             <div className="flex max-w-lg mx-auto">
-              <a href="#">
+              <Link href="/">
                 <span className="sr-only">Your Company</span>
                 <img
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt=""
                   className="w-auto h-8"
                 />
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -92,7 +92,7 @@ export default function Example() {
                         </li>
                       )}
                       {cartItems?.items?.map((product) => (
-                        <li key={product.id} className="flex py-6 space-x-6">
+                        <li key={product._id} className="flex py-6 space-x-6">
                           <Image
                             src={product.image}
                             alt={product.name}
@@ -126,7 +126,7 @@ export default function Example() {
                                   type="button"
                                   className="text-sm font-medium text-red-600 hover:text-red-500"
                                   onClick={() =>
-                                    handleRemoveItemFromCart(product._id)
+                                    handleRemoveItemFromCart(product)
                                   }
                                 >
                                   Remove
@@ -214,7 +214,7 @@ export default function Example() {
                         <button
                           type="button"
                           className="text-sm font-medium text-red-600 hover:text-red-500"
-                          onClick={() => handleRemoveItemFromCart(product._id)}
+                          onClick={() => handleRemoveItemFromCart(product)}
                         >
                           Remove
                         </button>
