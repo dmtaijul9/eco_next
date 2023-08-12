@@ -174,19 +174,20 @@ const CartNav = () => {
                         </div>
 
                         <div className="mt-6">
-                          <Link
+                          <Button
                             href="/order/checkout"
-                            className="flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700"
+                            color="cyan"
+                            className="w-full"
                           >
-                            Checkout
-                          </Link>
+                            Go To Checkout
+                          </Button>
                         </div>
                         <div className="flex justify-center mt-6 text-sm text-center text-gray-500">
                           <p>
                             or
                             <button
                               type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              className="ml-2 font-medium text-indigo-600 hover:text-indigo-500"
                               onClick={() => setOpen(false)}
                             >
                               Continue Shopping

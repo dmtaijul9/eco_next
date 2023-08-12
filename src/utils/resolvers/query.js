@@ -5,3 +5,6 @@ export const getAllEcoSpecialProducts = () =>
 
 export const getSingleProduct = ({ id }) =>
   axios.get(`/api/products/${id}`).then((res) => res.data);
+
+export const getSingleOrderQuery = ({ id }) =>
+  axios.get(`/api/order/${id}`).then((res) => res.data);
