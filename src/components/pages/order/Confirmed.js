@@ -6,21 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
-const products = [
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    price: "$36.00",
-    color: "Charcoal",
-    size: "L",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/confirmation-page-06-product-01.jpg",
-    imageAlt: "Model wearing men's charcoal basic tee in large.",
-  },
-  // More products...
-];
-
 const Confirmed = () => {
   const router = useRouter();
   const { orderId } = router.query;
@@ -31,7 +16,6 @@ const Confirmed = () => {
     enabled: !!orderId,
   });
 
-  console.log(data);
   const order = data?.data?.order;
 
   if (isLoading) {
@@ -43,7 +27,7 @@ const Confirmed = () => {
       <main className="relative lg:min-h-full">
         <div>
           <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-32 xl:gap-x-24">
-            <div className="flex items-center justify-center w-full h-full">
+            <div className="flex items-start justify-center w-full h-full">
               <div>
                 <h1 className="text-lg font-medium text-primary">
                   Order received
@@ -59,6 +43,57 @@ const Confirmed = () => {
                 <dl className="mt-16 text-sm font-medium">
                   <dt className="text-gray-900">Tracking number</dt>
                   <dd className="mt-2 text-indigo-600">{order._id}</dd>
+                </dl>
+                <dl className="grid grid-cols-1 mt-16 text-sm border-t text-gra y-600 gap-x-4">
+                  <div className="mt-2 ">
+                    <dt className="font-medium text-gray-900">
+                      Shipping Address
+                    </dt>
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Address:</span>{" "}
+                        <span>{order.shipping_address.address}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">City:</span>{" "}
+                        <span>{order.shipping_address.city}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Postal Code:</span>{" "}
+                        <span>{order.shipping_address.postal_code}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Country:</span>{" "}
+                        <span>{order.shipping_address.country}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2 border-t">
+                    <dt className="font-medium text-gray-900">
+                      Contact Information
+                    </dt>
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Name:</span>{" "}
+                        <span>{order.shipping_address.reciever_name}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Phone:</span>{" "}
+                        <span>{order.shipping_address.phone_number}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="py-2 mt-2 border-t border-b">
+                    <dt className="font-medium text-gray-900">
+                      Others Information
+                    </dt>
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold">Payment Method:</span>{" "}
+                        <span>{order.payment_method}</span>
+                      </div>
+                    </div>
+                  </div>
                 </dl>
               </div>
             </div>
@@ -97,43 +132,6 @@ const Confirmed = () => {
                   <dt className="text-base">Total</dt>
                   <dd className="text-base">
                     {formateMoney(order.total_price)}
-                  </dd>
-                </div>
-              </dl>
-
-              <dl className="grid grid-cols-2 mt-16 text-sm text-gray-600 gap-x-4">
-                <div>
-                  <dt className="font-medium text-gray-900">
-                    Shipping Address
-                  </dt>
-                  <dd className="mt-2">
-                    <address className="not-italic">
-                      <span className="block">
-                        {order.shipping_address.address}
-                      </span>
-                      <span className="block">
-                        {order.shipping_address.postal_code}{" "}
-                        {order.shipping_address.city}
-                      </span>
-                      <span className="block">
-                        {order.shipping_address.country}
-                      </span>
-                    </address>
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-gray-900">
-                    Contact Information
-                  </dt>
-                  <dd className="mt-2">
-                    <span className="block">
-                      <span className="font-semibold">Name:</span>{" "}
-                      {order.shipping_address.reciever_name}
-                    </span>
-                    <span className="block">
-                      <span className="font-semibold">Phone:</span>{" "}
-                      {order.shipping_address.phone_number}
-                    </span>
                   </dd>
                 </div>
               </dl>

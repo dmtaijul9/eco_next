@@ -8,3 +8,6 @@ export const getSingleProduct = ({ id }) =>
 
 export const getSingleOrderQuery = ({ id }) =>
   axios.get(`/api/order/${id}`).then((res) => res.data);
+
+export const getAllProductsQuery = () =>
+  axios.get("/api/products").then((res) => res.data);
