@@ -11,3 +11,7 @@ export const getSingleOrderQuery = ({ id }) =>
 
 export const getAllProductsQuery = () =>
   axios.get("/api/products").then((res) => res.data);
+
+export const getDashboardAnalyticsQuery = () => {
+  return axios.get("/api/admin/analytics").then((res) => res.data);
+};

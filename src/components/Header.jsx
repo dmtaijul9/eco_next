@@ -188,12 +188,17 @@ export function Header() {
                           >
                             Order tracking
                           </Link>
-                          <Link
-                            className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
-                            href="/security"
-                          >
-                            Security
-                          </Link>
+                          {
+                            // if user is admin then show admin link
+                            session?.user?.role === "ADMIN" && (
+                              <Link
+                                className="w-full px-3 py-1 text-center rounded-md hover:bg-primary hover:text-white"
+                                href="/admin/dashboard"
+                              >
+                                Admin Dashboard
+                              </Link>
+                            )
+                          }
                           <Button
                             color="danger"
                             className="mt-2"
