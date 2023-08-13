@@ -3,12 +3,65 @@ import { Button } from "./Button";
 import Link from "next/link";
 import Image from "next/image";
 import ProductListPlaceholder from "./pages/home/ProductListPlaceholder";
+import { useDispatch, useSelector } from "react-redux";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { addToCart } from "@/redux/reducers/cartSlice";
 
 const ProductListComonent = ({
   products = [],
   title = "",
   isLoading = false,
 }) => {
+  //INFO: Get the cart from the local storage.
+  const [localCartItems, setCartItems] = useLocalStorage("CART", {
+    items: [],
+    totalItem: 0,
+  });
+
+  //INFO: Get the cart from the redux store.
+  const cartItems = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  // INFO: This is the function that will be called when the user clicks the "Add to Cart" button.
+  const addToCartHandler = async (product) => {
+    //INFO: Check if the product is already in the cart.
+    const cartExists = cartItems.items.find((item) => item._id === product._id);
+
+    if (cartExists) {
+      //INFO: If the product is already in the cart, then increase the quantity by 1.
+      const newCartItems = {
+        items: cartItems.items.map((item) =>
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        ),
+        totalItem: cartItems.totalItem + 1,
+      };
+
+      //INFO: Update the cart in the local storage.
+      setCartItems(newCartItems);
+      //INFO: Update the cart in the redux store.
+      dispatch(addToCart(newCartItems));
+    } else {
+      //INFO: If the product is not in the cart, then add the product to the cart.
+      const newProduct = {
+        ...product,
+        quantity: 1,
+      };
+      //INFO: Update the cart in the local storage.
+      setCartItems({
+        items: [...cartItems.items, newProduct],
+        totalItem: cartItems.totalItem + 1,
+      });
+      //INFO: Update the cart in the redux store.
+      dispatch(
+        addToCart({
+          items: [...cartItems.items, newProduct],
+          totalItem: cartItems.totalItem + 1,
+        })
+      );
+    }
+  };
   return (
     <div className="bg-white">
       <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
