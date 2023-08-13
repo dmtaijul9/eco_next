@@ -10,7 +10,7 @@ function classNames(...classes) {
 const NewOrderTable = ({ orders = [], title = "", link }) => {
   return (
     <div className="px-4 py-5 sm:px-6 lg:px-8">
-      <div className="items-center pb-4 border-b sm:flex">
+      <div className="flex items-center justify-between pb-4 border-b">
         <div className="sm:flex-auto">
           <h1 className="text-base font-semibold leading-6 text-gray-900">
             {title}
@@ -25,7 +25,7 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
         </div>
       </div>
       <div className="flow-root mt-2">
-        <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
             <table className="min-w-full border-separate border-spacing-0">
               <thead>
@@ -38,13 +38,13 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
                   </th>
                   <th
                     scope="col"
-                    className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
+                    className="sticky top-0 z-10  border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
                   >
                     Phone Number
                   </th>
                   <th
                     scope="col"
-                    className="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
+                    className="sticky top-0 z-10  border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
                   >
                     Order Status
                   </th>
@@ -86,7 +86,7 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
                         personIdx !== orders.length - 1
                           ? "border-b border-gray-200"
                           : "",
-                        "whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell"
+                        "whitespace-nowrap  px-3 py-4 text-sm text-gray-500 sm:table-cell"
                       )}
                     >
                       {order?.shipping_address?.phone_number}
@@ -96,7 +96,7 @@ const NewOrderTable = ({ orders = [], title = "", link }) => {
                         personIdx !== orders.length - 1
                           ? "border-b border-gray-200"
                           : "",
-                        "whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 lg:table-cell"
+                        "whitespace-nowrap  px-3 py-4 text-sm text-gray-500 lg:table-cell"
                       )}
                     >
                       {order?.order_status === "pending" ? (
