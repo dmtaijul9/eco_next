@@ -97,7 +97,10 @@ const CreateProduct = () => {
           setImagePreview(null);
         },
         onError: (error) => {
-          toast.error(error.response.data.message);
+          toast.error(
+            error?.response?.data?.message ||
+              "Something went wrong try to create product from desktop browser"
+          );
         },
       }
     );
