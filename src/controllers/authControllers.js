@@ -44,6 +44,15 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
 const updateUserMutation = catchAsyncErrors(async (req, res, next) => {
   const { userId } = req.query;
 
+  const user = await User.findById(userId);
+  const isRootAdmin =
+    user.role === "ADMIN" &&
+    user.email === "admin@admin.com" &&
+    user.phone === "8801326108111";
+
+  if (isRootAdmin)
+    return next(new ErrorHandler("Root admin can't be updated.", 400));
+
   const { first_name, last_name, email, phone, password, role } = req.body;
 
   const variables = {};

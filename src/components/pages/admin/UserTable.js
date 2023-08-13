@@ -34,8 +34,8 @@ const UsersTable = ({ customers = [], title = "", link, refetch }) => {
           setUpdatingId(null);
           refetch();
         },
-        onError: () => {
-          toast.error("Something went wrong");
+        onError: (error) => {
+          toast.error(error?.response?.data?.message);
         },
       }
     );
